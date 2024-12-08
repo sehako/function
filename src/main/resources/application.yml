@@ -1,0 +1,8 @@
+spring:
+ application:
+  name: function
+
+ config:
+  import:
+   - classpath:/application-database.yml
+   - classpath:/application-jpa.yml

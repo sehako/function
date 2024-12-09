@@ -1,7 +1,7 @@
-package com.sehako.function.user.domain;
+package com.sehako.playground.user.domain;
 
-import com.sehako.function.common.entity.BaseTimeEntity;
-import com.sehako.function.user.domain.type.AuthType;
+import com.sehako.playground.common.entity.BaseTimeEntity;
+import com.sehako.playground.user.domain.type.AuthType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

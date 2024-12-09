@@ -1,4 +1,4 @@
-package com.sehako.function.user.domain.type;
+package com.sehako.playground.user.domain.type;
 
 public enum AuthType {
     GOOGLE, KAKAO, NAVER

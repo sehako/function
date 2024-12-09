@@ -1,6 +1,8 @@
 spring:
  application:
-  name: function
+  name: playground
+ messages:
+  basename: messages, errors
 
  config:
   import:

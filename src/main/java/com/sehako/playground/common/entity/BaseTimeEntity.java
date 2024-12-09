@@ -1,4 +1,4 @@
-package com.sehako.function.common.entity;
+package com.sehako.playground.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

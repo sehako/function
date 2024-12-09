@@ -1,10 +1,10 @@
-package com.sehako.function;
+package com.sehako.playground;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FunctionApplicationTests {
+class PlaygroundApplicationTests {
 
 	@Test
 	void contextLoads() {

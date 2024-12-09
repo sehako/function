@@ -1,13 +1,13 @@
-package com.sehako.function;
+package com.sehako.playground;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FunctionApplication {
+public class PlaygroundApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FunctionApplication.class, args);
+		SpringApplication.run(PlaygroundApplication.class, args);
 	}
 
 }

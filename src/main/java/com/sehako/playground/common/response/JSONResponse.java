@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.sehako.playground.common.code.ErrorCode;
 import com.sehako.playground.common.code.SuccessCode;
 import com.sehako.playground.common.message.MessageUtil;
-import lombok.Getter;
 
 @JsonPropertyOrder({"isSuccess", "code", "message", "result"})
 public record JSONResponse<T>(
@@ -18,12 +17,12 @@ public record JSONResponse<T>(
 ) {
 
     public static <T> JSONResponse<T> onSuccess(SuccessCode successCode, T data) {
-        String message = MessageUtil.getMessage(successCode.getMessageCode());
+        String message = MessageUtil.getMessage(successCode.name());
         return new JSONResponse<>(true, successCode.getCode(), message, data);
     }
 
     public static <T> JSONResponse<T> onFailure(ErrorCode errorCode, T data) {
-        String message = MessageUtil.getMessage(errorCode.getMessageCode());
+        String message = MessageUtil.getMessage(errorCode.name());
         return new JSONResponse<>(false, errorCode.getCode(), message, data);
     }
 }

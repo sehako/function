@@ -1,6 +1,8 @@
 package com.sehako.playground.user.presentation;
 
 
+import com.sehako.playground.common.code.ErrorCode;
+import com.sehako.playground.common.exception.CommonException;
 import com.sehako.playground.user.presentation.request.UserRegisterRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @GetMapping("/test/{param}")
     public void paramTypeMisMatch(@PathVariable int param) {
+        throw new CommonException(ErrorCode.SERVER_ERROR);
     }
 
     @PostMapping("/test")

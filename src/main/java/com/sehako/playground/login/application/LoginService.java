@@ -23,6 +23,12 @@ public class LoginService {
         return UserResponse.convertFrom(user);
     }
 
+    public UserResponse login(String code, OAuthProvider provider) {
+        UserInfoDto userInfo = provider.authenticate(code);
+        User user = getOrCreateUser(userInfo);
+        return UserResponse.convertFrom(user);
+    }
+
     private User getOrCreateUser(UserInfoDto userInfoDto) {
         User authUser = null;
         if (userInfoDto.getAuthType() == AuthType.KAKAO) {

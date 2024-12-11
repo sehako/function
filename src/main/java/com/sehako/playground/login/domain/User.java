@@ -37,7 +37,7 @@ public class User extends BaseTimeEntity {
     private Boolean deleted = false;
 
     @Builder
-    public User(Long id, String email, String nickname, AuthType authType, Boolean deleted) {
+    private User(Long id, String email, String nickname, AuthType authType, Boolean deleted) {
         this.email = email;
         this.nickname = nickname;
         this.authType = authType;

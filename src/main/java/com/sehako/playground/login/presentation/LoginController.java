@@ -4,6 +4,8 @@ package com.sehako.playground.login.presentation;
 import com.sehako.playground.global.response.JSONResponse;
 import com.sehako.playground.login.application.LoginService;
 import com.sehako.playground.login.application.response.UserResponse;
+import com.sehako.playground.login.infrastructure.provider.AuthProviderPicker;
+import com.sehako.playground.login.infrastructure.provider.OAuthProvider;
 import com.sehako.playground.login.presentation.request.LoginRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +32,15 @@ public class LoginController {
 
         return ResponseEntity.ok()
                 .body(JSONResponse.onSuccess(loginService.login(loginRequest.code(), providerName)));
+    }
+
+    @PostMapping("/auth")
+    public ResponseEntity<JSONResponse<UserResponse>> login(
+            @AuthProviderPicker OAuthProvider provider,
+            @RequestBody @Valid LoginRequest loginRequest
+    ) {
+
+        return ResponseEntity.ok()
+                .body(JSONResponse.onSuccess(loginService.login(loginRequest.code(), provider)));
     }
 }

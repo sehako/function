@@ -1,10 +1,11 @@
 spring:
- application:
-  name: playground
- messages:
-  basename: messages, errors
+  application:
+    name: playground
+  messages:
+    basename: messages, errors
 
- config:
-  import:
-   - classpath:/application-database.yml
-   - classpath:/application-jpa.yml
+  config:
+    import:
+      - classpath:/application-database.yml
+      - classpath:/application-jpa.yml
+      - classpath:/application-auth.yml

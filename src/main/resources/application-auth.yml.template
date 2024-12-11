@@ -1,0 +1,4 @@
+auth:
+  client-id: CLIENT-ID
+  client-secret: CLIENT-SECRET
+  redirect-uri: REDIRECT-URI

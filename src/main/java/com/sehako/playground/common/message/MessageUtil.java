@@ -1,20 +1,14 @@
 package com.sehako.playground.common.message;
 
 import java.util.Locale;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
 
-@Component
-public class MessageUtil implements ApplicationContextAware {
+public class MessageUtil {
     private static MessageSource messageSource;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.messageSource = applicationContext.getBean(MessageSource.class);
+    public static void init(MessageSource messageSource) {
+        MessageUtil.messageSource = messageSource;
     }
 
     public static String getMessage(String code) {

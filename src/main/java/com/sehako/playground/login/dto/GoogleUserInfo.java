@@ -9,8 +9,8 @@ public record GoogleUserInfo(
         @JsonProperty("name")
         String name
 ) {
-    public UserInfoDto toUserInfoDto() {
-        return UserInfoDto
+    public AuthUserInfoDto toUserInfoDto() {
+        return AuthUserInfoDto
                 .builder()
                 .email(email)
                 .name(name)

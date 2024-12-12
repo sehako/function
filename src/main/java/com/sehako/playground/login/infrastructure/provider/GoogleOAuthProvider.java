@@ -3,9 +3,9 @@ package com.sehako.playground.login.infrastructure.provider;
 import static com.sehako.playground.global.code.ErrorCode.INVALID_AUTHORIZATION_CODE;
 
 import com.sehako.playground.global.exception.CommonException;
+import com.sehako.playground.login.dto.AuthUserInfoDto;
 import com.sehako.playground.login.dto.GoogleUserInfo;
 import com.sehako.playground.login.dto.OAuthAccessToken;
-import com.sehako.playground.login.dto.UserInfoDto;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +29,6 @@ public class GoogleOAuthProvider implements OAuthProvider {
     private String redirectUri;
     @Value("${oauth2.provider.google.token-uri}")
     private String tokenUri;
-
     @Value("${oauth2.provider.google.info-uri}")
     private String infoUri;
 
@@ -39,11 +38,11 @@ public class GoogleOAuthProvider implements OAuthProvider {
     }
 
     @Override
-    public UserInfoDto authenticate(String code) {
+    public AuthUserInfoDto authenticate(String code) {
         return requestUserInfo(code);
     }
 
-    private UserInfoDto requestUserInfo(String code) {
+    private AuthUserInfoDto requestUserInfo(String code) {
         String accessToken = getAccessToken(code);
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
@@ -60,7 +59,7 @@ public class GoogleOAuthProvider implements OAuthProvider {
                 .orElseThrow(() -> new CommonException(INVALID_AUTHORIZATION_CODE))
                 .toUserInfoDto();
     }
-    
+
     private String getAccessToken(final String code) {
         ResponseEntity<OAuthAccessToken> accessTokenResponse = requestAccessToken(code,
                 clientId,

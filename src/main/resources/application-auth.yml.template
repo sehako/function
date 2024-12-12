@@ -1,4 +1,14 @@
-auth:
-  client-id: CLIENT-ID
-  client-secret: CLIENT-SECRET
-  redirect-uri: REDIRECT-URI
+oauth2:
+  provider:
+    google:
+      client-id: CLIENT_ID
+      client-secret: CLIENT_SECRET
+      redirect-uri: http://localhost:5500/login.html
+      token-uri: https://oauth2.googleapis.com/token
+      info-uri: https://www.googleapis.com/userinfo/v2/me
+    kakao:
+      client-id: CLIENT_ID
+      client-secret: CLIENT_SECRET
+      redirect-uri: http://localhost:5500/login.html?provider=kakao
+      token-uri: https://kauth.kakao.com/oauth/token
+      info-uri: https://kapi.kakao.com/v2/user/me

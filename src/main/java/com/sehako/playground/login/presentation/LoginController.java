@@ -3,10 +3,13 @@ package com.sehako.playground.login.presentation;
 
 import com.sehako.playground.global.response.JSONResponse;
 import com.sehako.playground.login.application.LoginService;
-import com.sehako.playground.login.application.response.UserResponse;
+import com.sehako.playground.login.application.response.LoginResponse;
+import com.sehako.playground.login.dto.AuthInfoDto;
+import com.sehako.playground.login.infrastructure.cookie.CookieHandler;
 import com.sehako.playground.login.infrastructure.provider.AuthProviderPicker;
 import com.sehako.playground.login.infrastructure.provider.OAuthProvider;
 import com.sehako.playground.login.presentation.request.LoginRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,22 +28,28 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/auth/{provider}")
-    public ResponseEntity<JSONResponse<UserResponse>> login(
+    public ResponseEntity<JSONResponse<LoginResponse>> login(
             @PathVariable("provider") String providerName,
-            @RequestBody @Valid LoginRequest loginRequest
+            @RequestBody @Valid LoginRequest loginRequest,
+            HttpServletResponse response
     ) {
-
+        AuthInfoDto authInfo = loginService.login(loginRequest.code(), providerName);
+        CookieHandler.setRefreshTokenToHeader(response, authInfo.userToken().refreshToken());
         return ResponseEntity.ok()
-                .body(JSONResponse.onSuccess(loginService.login(loginRequest.code(), providerName)));
+                .body(JSONResponse.onSuccess(
+                        new LoginResponse(authInfo.nickname(), "Bearer", authInfo.userToken().accessToken())));
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<JSONResponse<UserResponse>> login(
+    public ResponseEntity<JSONResponse<LoginResponse>> login(
             @AuthProviderPicker OAuthProvider provider,
-            @RequestBody @Valid LoginRequest loginRequest
+            @RequestBody @Valid LoginRequest loginRequest,
+            HttpServletResponse response
     ) {
-
+        AuthInfoDto authInfo = loginService.login(loginRequest.code(), provider);
+        CookieHandler.setRefreshTokenToHeader(response, authInfo.userToken().refreshToken());
         return ResponseEntity.ok()
-                .body(JSONResponse.onSuccess(loginService.login(loginRequest.code(), provider)));
+                .body(JSONResponse.onSuccess(
+                        new LoginResponse(authInfo.nickname(), "Bearer", authInfo.userToken().accessToken())));
     }
 }

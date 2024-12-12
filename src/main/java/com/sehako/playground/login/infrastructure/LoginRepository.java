@@ -1,4 +1,4 @@
-package com.sehako.playground.login.infrastructure.repository;
+package com.sehako.playground.login.infrastructure;
 
 import com.sehako.playground.login.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

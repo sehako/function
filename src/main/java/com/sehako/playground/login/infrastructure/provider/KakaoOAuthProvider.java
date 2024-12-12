@@ -3,9 +3,9 @@ package com.sehako.playground.login.infrastructure.provider;
 import static com.sehako.playground.global.code.ErrorCode.INVALID_AUTHORIZATION_CODE;
 
 import com.sehako.playground.global.exception.CommonException;
+import com.sehako.playground.login.dto.AuthUserInfoDto;
 import com.sehako.playground.login.dto.KakaoUserInfo;
 import com.sehako.playground.login.dto.OAuthAccessToken;
-import com.sehako.playground.login.dto.UserInfoDto;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -40,11 +40,11 @@ public class KakaoOAuthProvider implements OAuthProvider {
     }
 
     @Override
-    public UserInfoDto authenticate(String code) {
+    public AuthUserInfoDto authenticate(String code) {
         return requestUserInfo(code);
     }
 
-    private UserInfoDto requestUserInfo(String code) {
+    private AuthUserInfoDto requestUserInfo(String code) {
         String accessToken = getAccessToken(code);
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
@@ -58,6 +58,7 @@ public class KakaoOAuthProvider implements OAuthProvider {
                 }
         );
         Map<String, Object> result = userResponse.getBody();
+        @SuppressWarnings("unchecked")
         Map<String, Object> properties = (Map<String, Object>) result.get("properties");
 
         return new KakaoUserInfo(properties.get("nickname").toString())

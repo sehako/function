@@ -1,5 +1,8 @@
 package com.sehako.playground.login.application;
 
+import com.sehako.playground.global.code.ErrorCode;
+import com.sehako.playground.login.application.exception.UserNotFoundException;
+import com.sehako.playground.login.application.response.UserInfoResponse;
 import com.sehako.playground.login.domain.User;
 import com.sehako.playground.login.domain.type.AuthType;
 import com.sehako.playground.login.dto.AuthInfoDto;
@@ -9,6 +12,7 @@ import com.sehako.playground.login.infrastructure.LoginRepository;
 import com.sehako.playground.login.infrastructure.jwt.JwtUtil;
 import com.sehako.playground.login.infrastructure.provider.OAuthProvider;
 import com.sehako.playground.login.infrastructure.provider.ProviderFactory;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +36,14 @@ public class LoginService {
         User user = getOrCreateUser(authUserInfo);
         UserToken userToken = jwtUtil.generateToken(String.valueOf(user.getId()));
         return AuthInfoDto.convertFrom(user, userToken);
+    }
+
+    public UserInfoResponse getUserInfo(String accessToken, String refreshToken) {
+        Long userId = jwtUtil.getUserId(accessToken, refreshToken);
+        Optional<User> loginUserInfo = loginRepository.findById(userId);
+
+        return new UserInfoResponse(
+                loginUserInfo.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND)).getNickname());
     }
 
     private User getOrCreateUser(AuthUserInfoDto authUserInfoDto) {

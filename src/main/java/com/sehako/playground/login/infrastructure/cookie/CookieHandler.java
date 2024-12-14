@@ -13,6 +13,16 @@ public class CookieHandler {
                 .build();
 
         response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
+    }
 
+    public static void resetRefreshTokenToHeader(HttpServletResponse response) {
+        ResponseCookie responseCookie = ResponseCookie
+                .from("refresh-token", "")
+                .maxAge(0L)
+                .httpOnly(true)
+                .path("/")
+                .build();
+
+        response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
 }

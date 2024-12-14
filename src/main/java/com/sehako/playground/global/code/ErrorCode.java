@@ -2,6 +2,7 @@ package com.sehako.playground.global.code;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import lombok.Getter;
@@ -20,6 +21,7 @@ public enum ErrorCode {
     ACCESS_TOKEN_EXPIRED(40100, UNAUTHORIZED),
     REFRESH_TOKEN_EXPIRED(40200, UNAUTHORIZED),
     TOKEN_NOT_MATCHED(40300, UNAUTHORIZED),
+    USER_NOT_FOUND(40400, NOT_FOUND),
     ;
 
     private final int code;

@@ -2,6 +2,7 @@ package com.sehako.playground.login.application;
 
 import com.sehako.playground.global.code.ErrorCode;
 import com.sehako.playground.login.application.exception.UserNotFoundException;
+import com.sehako.playground.login.application.response.AccessTokenResponse;
 import com.sehako.playground.login.application.response.UserInfoResponse;
 import com.sehako.playground.login.domain.User;
 import com.sehako.playground.login.domain.type.AuthType;
@@ -44,6 +45,14 @@ public class LoginService {
 
         return new UserInfoResponse(
                 loginUserInfo.orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND)).getNickname());
+    }
+
+    public AccessTokenResponse reissueAccessToken(String refreshToken) {
+        return new AccessTokenResponse(jwtUtil.regenerateAccessToken(refreshToken));
+    }
+
+    public void logout(String refreshToken) {
+        jwtUtil.cacheOutRefreshToken(refreshToken);
     }
 
     private User getOrCreateUser(AuthUserInfoDto authUserInfoDto) {

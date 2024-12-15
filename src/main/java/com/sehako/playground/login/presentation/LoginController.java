@@ -3,6 +3,7 @@ package com.sehako.playground.login.presentation;
 
 import com.sehako.playground.global.response.JSONResponse;
 import com.sehako.playground.login.application.LoginService;
+import com.sehako.playground.login.application.response.AccessTokenResponse;
 import com.sehako.playground.login.application.response.LoginResponse;
 import com.sehako.playground.login.application.response.UserInfoResponse;
 import com.sehako.playground.login.dto.AuthInfoDto;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LoginController {
     private final LoginService loginService;
+    @Value("${jwt.refresh-token-expiration-time}")
+    private long refreshTokenExpirationTime;
 
     @PostMapping("/auth/{provider}")
     public ResponseEntity<JSONResponse<LoginResponse>> login(
@@ -39,7 +43,8 @@ public class LoginController {
             HttpServletResponse response
     ) {
         AuthInfoDto authInfo = loginService.login(loginRequest.code(), providerName);
-        CookieHandler.setRefreshTokenToHeader(response, authInfo.userToken().refreshToken());
+        CookieHandler.setRefreshTokenToHeader(response, authInfo.userToken().refreshToken(),
+                refreshTokenExpirationTime);
         return ResponseEntity.ok()
                 .body(JSONResponse.onSuccess(
                         new LoginResponse(authInfo.nickname(), "Bearer", authInfo.userToken().accessToken())));
@@ -52,7 +57,8 @@ public class LoginController {
             HttpServletResponse response
     ) {
         AuthInfoDto authInfo = loginService.login(loginRequest.code(), provider);
-        CookieHandler.setRefreshTokenToHeader(response, authInfo.userToken().refreshToken());
+        CookieHandler.setRefreshTokenToHeader(response, authInfo.userToken().refreshToken(),
+                refreshTokenExpirationTime);
         return ResponseEntity.ok()
                 .body(JSONResponse.onSuccess(
                         new LoginResponse(authInfo.nickname(), "Bearer", authInfo.userToken().accessToken())));
@@ -62,15 +68,22 @@ public class LoginController {
     public ResponseEntity<JSONResponse<UserInfoResponse>> userInfo(
             @CookieValue("refresh-token") String refreshToken,
             @RequestHeader(value = "Authorization") String accessToken) {
-
         return ResponseEntity.ok().body(JSONResponse.onSuccess(loginService.getUserInfo(accessToken, refreshToken)));
+    }
+
+    @GetMapping("/token/reissue")
+    public ResponseEntity<JSONResponse<AccessTokenResponse>> reissue(
+            @CookieValue("refresh-token") String refreshToken) {
+        return ResponseEntity.ok().body(JSONResponse.onSuccess(loginService.reissueAccessToken(refreshToken)));
     }
 
     @DeleteMapping("/logout")
     public ResponseEntity<Object> logout(
+            @CookieValue("refresh-token") String refreshToken,
             HttpServletResponse response
     ) {
-        CookieHandler.resetRefreshTokenToHeader(response);
+        CookieHandler.setRefreshTokenToHeader(response, "", 0L);
+        loginService.logout(refreshToken);
         return ResponseEntity.noContent().build();
     }
 }

@@ -9,3 +9,9 @@ spring:
       - classpath:/application-database.yml
       - classpath:/application-jpa.yml
       - classpath:/application-auth.yml
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 6000

@@ -5,20 +5,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 
 public class CookieHandler {
-    public static void setRefreshTokenToHeader(HttpServletResponse response, String refreshToken) {
+    public static void setRefreshTokenToHeader(HttpServletResponse response, String refreshToken, long expirationTime) {
         ResponseCookie responseCookie = ResponseCookie
                 .from("refresh-token", refreshToken)
-                .httpOnly(true)
-                .path("/")
-                .build();
-
-        response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
-    }
-
-    public static void resetRefreshTokenToHeader(HttpServletResponse response) {
-        ResponseCookie responseCookie = ResponseCookie
-                .from("refresh-token", "")
-                .maxAge(0L)
+                .maxAge(expirationTime)
                 .httpOnly(true)
                 .path("/")
                 .build();

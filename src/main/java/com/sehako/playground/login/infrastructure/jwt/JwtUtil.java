@@ -60,7 +60,6 @@ public class JwtUtil {
     public String regenerateAccessToken(String refreshToken) {
         validateRefreshToken(refreshToken);
         String userId = String.valueOf(redisTokenService.getToken(refreshToken));
-        System.out.println(userId);
         if (userId == null) {
             throw new TokenTheftException(REFRESH_TOKEN_EXPIRED);
         }

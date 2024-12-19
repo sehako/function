@@ -1,0 +1,20 @@
+oauth2:
+  provider:
+    google:
+      client-id: 1021753320609-g7d3unn5msvo6i0kcmttd2fs7hiccb0d.apps.googleusercontent.com
+      client-secret: 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
+      redirect-uri: http://localhost:5500/login.html
+      token-uri: https://oauth2.googleapis.com/token
+      info-uri: https://www.googleapis.com/userinfo/v2/me
+    kakao:
+      client-id: cb6ec3bc5fd6ae37805cd7b37cb89e90
+      client-secret: q4aFhlpvxNPoAioc6Bin2rXAuRdywhYl
+      redirect-uri: http://localhost:5500/login.html?provider=kakao
+      token-uri: https://kauth.kakao.com/oauth/token
+      info-uri: https://kapi.kakao.com/v2/user/me
+
+jwt:
+  secret: SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+  #  access-token-expiration-time: 6
+  refresh-token-expiration-time: 604800000
+  access-token-expiration-time: 3600000

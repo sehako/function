@@ -33,7 +33,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//  JWT
+    //  JWT
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.6'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.12.6'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.6'
@@ -41,9 +41,9 @@ dependencies {
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-//	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-//	testImplementation 'org.springframework.security:spring-security-test'
+    // fcm
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.4.2'
+    
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

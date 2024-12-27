@@ -32,12 +32,13 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "auth_provider", nullable = false)
     private AuthType authType;
+
     @Column(nullable = false)
     @ColumnDefault(value = "false")
     private Boolean deleted = false;
 
     @Builder
-    private User(Long id, String email, String nickname, AuthType authType, Boolean deleted) {
+    private User(String email, String nickname, AuthType authType) {
         this.email = email;
         this.nickname = nickname;
         this.authType = authType;

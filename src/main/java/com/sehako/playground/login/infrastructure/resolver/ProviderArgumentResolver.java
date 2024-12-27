@@ -1,5 +1,7 @@
-package com.sehako.playground.login.infrastructure.provider;
+package com.sehako.playground.login.infrastructure.resolver;
 
+import com.sehako.playground.login.infrastructure.provider.OAuthProvider;
+import com.sehako.playground.login.infrastructure.provider.ProviderFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

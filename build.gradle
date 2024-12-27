@@ -43,7 +43,10 @@ dependencies {
 
     // fcm
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.4.2'
-    
+
+    // smtp
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.4.1'
+
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

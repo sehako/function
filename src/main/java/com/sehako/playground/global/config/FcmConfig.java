@@ -13,8 +13,6 @@ import org.springframework.core.io.ClassPathResource;
 public class FcmConfig {
     @Value("${fcm.config-path}")
     private String fcmConfigPath;
-    @Value("${fcm.project-id}")
-    private String projectId;
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {

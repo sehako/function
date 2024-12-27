@@ -4,6 +4,7 @@ import static com.sehako.playground.global.code.ErrorCode.ACCESS_TOKEN_EXPIRED;
 import static com.sehako.playground.global.code.ErrorCode.NOT_SUPPORTED_TOKEN_FORMAT;
 import static com.sehako.playground.global.code.ErrorCode.REFRESH_TOKEN_EXPIRED;
 
+import com.sehako.playground.global.redis.RedisService;
 import com.sehako.playground.login.application.exception.InvalidJwtException;
 import com.sehako.playground.login.application.exception.TokenExpiredException;
 import com.sehako.playground.login.application.exception.TokenTheftException;
@@ -25,13 +26,13 @@ public class JwtUtil {
     private final SecretKey secretKey;
     private final long accessTokenExpirationTIme;
     private final long refreshTokenExpirationTIme;
-    private final RedisTokenService redisTokenService;
+    private final RedisService redisTokenService;
 
     public JwtUtil(
             @Value("${jwt.secret}") String secretKey,
             @Value("${jwt.access-token-expiration-time}") long accessTokenExpirationTIme,
             @Value("${jwt.refresh-token-expiration-time}") long refreshTokenExpirationTime,
-            RedisTokenService redisTokenService
+            RedisService redisTokenService
     ) {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.accessTokenExpirationTIme = accessTokenExpirationTIme;
@@ -42,7 +43,7 @@ public class JwtUtil {
     public UserToken generateToken(String id) {
         String accessToken = createToken(id, accessTokenExpirationTIme);
         String refreshToken = createToken("REFRESH_TOKEN", refreshTokenExpirationTIme);
-        redisTokenService.saveToken(refreshToken, id, refreshTokenExpirationTIme);
+        redisTokenService.save(refreshToken, id, refreshTokenExpirationTIme);
         return new UserToken(refreshToken, accessToken);
     }
 
@@ -50,7 +51,7 @@ public class JwtUtil {
         String parsedAccessToken = bearerParse(accessToken);
         validateTokens(parsedAccessToken, refreshToken);
 
-        if (redisTokenService.getToken(refreshToken) == null) {
+        if (redisTokenService.get(refreshToken) == null) {
             throw new TokenTheftException(REFRESH_TOKEN_EXPIRED);
         }
 
@@ -59,7 +60,7 @@ public class JwtUtil {
 
     public String regenerateAccessToken(String refreshToken) {
         validateRefreshToken(refreshToken);
-        String userId = String.valueOf(redisTokenService.getToken(refreshToken));
+        String userId = String.valueOf(redisTokenService.get(refreshToken));
         if (userId == null) {
             throw new TokenTheftException(REFRESH_TOKEN_EXPIRED);
         }
@@ -67,7 +68,7 @@ public class JwtUtil {
     }
 
     public void cacheOutRefreshToken(String refreshToken) {
-        redisTokenService.deleteToken(refreshToken);
+        redisTokenService.delete(refreshToken);
     }
 
     private String bearerParse(String accessToken) {

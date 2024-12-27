@@ -1,4 +1,4 @@
-package com.sehako.playground.login.infrastructure.provider;
+package com.sehako.playground.login.infrastructure.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

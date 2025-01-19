@@ -1,7 +1,7 @@
 spring:
   servlet:
     multipart:
-      max-request-size: 100MB
+      max-request-size: 150MB
       max-file-size: 100MB
   application:
     name: playground

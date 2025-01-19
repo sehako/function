@@ -40,28 +40,4 @@ public class TokenGenerator {
             return null;
         }
     }
-
-    // Decrypt Token
-    public static String decryptToken(String token) {
-        byte[] decoded = Base64.getUrlDecoder().decode(token);
-
-        // Extract IV and encrypted data
-        byte[] iv = new byte[12];
-        byte[] encryptedData = new byte[decoded.length - 12];
-        System.arraycopy(decoded, 0, iv, 0, 12);
-        System.arraycopy(decoded, 12, encryptedData, 0, encryptedData.length);
-
-        try {
-            // Decrypt data
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            SecretKey secretKey = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), "AES");
-            GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
-            cipher.init(Cipher.DECRYPT_MODE, secretKey, spec);
-            byte[] decryptedData = cipher.doFinal(encryptedData);
-            return new String(decryptedData, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
